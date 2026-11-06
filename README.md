@@ -1,20 +1,25 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# logger
+simple game for elocogy
 
-# Run and deploy your AI Studio app
+**Эко-Лесоруб: Баланс Природы** — эко-экономическая браузерная игра (React 19 + TypeScript + Vite 8). Правила и управление — в [MANUAL.md](MANUAL.md).
 
-This contains everything you need to run your app locally.
+Играть: https://mshastapalau-sys.github.io/logger/
 
-View your app in AI Studio: https://ai.studio/apps/e01ce835-abd0-42d9-8c1b-0127a97c64a6
+## Запуск локально
 
-## Run Locally
+Требуется Node.js.
 
-**Prerequisites:**  Node.js
+```
+npm install
+npm run dev
+```
 
+Игра откроется на http://localhost:3000.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Деплой
+
+```
+npm run deploy
+```
+
+Собирает игру и публикует `dist` в ветку `gh-pages` (GitHub Pages).
