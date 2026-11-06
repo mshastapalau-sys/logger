@@ -31,6 +31,7 @@ import { CityFineModal } from './components/CityFineModal';
 import { BankruptcyModal } from './components/BankruptcyModal';
 import { NotificationLogModal } from './components/NotificationLogModal';
 import { TutorialModal } from './components/TutorialModal';
+import { StartRulesModal } from './components/StartRulesModal';
 import { UpgradesModal } from './components/UpgradesModal';
 import { TeleportGlitchModal } from './components/TeleportGlitchModal';
 import { VictoryModal, GameOverModal } from './components/EndGameModals';
@@ -524,6 +525,7 @@ export default function App() {
 
   // Modals & Settings
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
+  const [showStartRules, setShowStartRules] = useState<boolean>(true);
   const [showBankruptcyModal, setShowBankruptcyModal] = useState<boolean>(false);
   const [showNotificationLogModal, setShowNotificationLogModal] = useState<boolean>(false);
   const [showUpgradesModal, setShowUpgradesModal] = useState<boolean>(false);
@@ -962,7 +964,7 @@ export default function App() {
 
   // Main Tick Loop: Day/Night, Inspectors, Solar Charging
   useEffect(() => {
-    if (gameState !== 'PLAYING') return;
+    if (gameState !== 'PLAYING' || showStartRules) return;
 
     const interval = setInterval(() => {
       // 1. Advance Day/Night time
@@ -1106,7 +1108,7 @@ export default function App() {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [gameState, dayNight, hasBioFertilizer, location, gridPenalty.hasPenalty, placedMachines, deliveryBoxes]);
+  }, [gameState, showStartRules, dayNight, hasBioFertilizer, location, gridPenalty.hasPenalty, placedMachines, deliveryBoxes]);
 
   // Forest Inspector
   // Правило 1: Штраф даётся ТОЛЬКО если осталось из всех деревьев 2 дерева!
@@ -1215,6 +1217,14 @@ export default function App() {
     const handleGlobalKeys = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
 
+      if (showStartRules) {
+        if (e.key === 'Escape' || e.key === 'Enter' || e.code === 'Space') {
+          e.preventDefault();
+          setShowStartRules(false);
+        }
+        return;
+      }
+
       const key = e.key.toLowerCase();
       const code = e.code;
 
@@ -1269,6 +1279,7 @@ export default function App() {
   // Movement handler (WSAD)
   const handlePlayerMove = useCallback(
     (dx: number, dy: number) => {
+      if (showStartRules) return;
       setPlayer((prev) => {
         const speed = 4.4;
         let newX = prev.x + dx * speed;
@@ -1311,7 +1322,7 @@ export default function App() {
         };
       });
     },
-    [location, dayNight.isNight, gridPenalty.hasPenalty]
+    [location, dayNight.isNight, gridPenalty.hasPenalty, showStartRules]
   );
 
   // Left Click (ЛКМ: сломать коробку, срубить дерево или клик для движения)
@@ -2236,6 +2247,8 @@ export default function App() {
         />
       )}
 
+
+      {showStartRules && <StartRulesModal onClose={() => setShowStartRules(false)} />}
 
       {showTutorial && (
         <TutorialModal onClose={() => setShowTutorial(false)} />
