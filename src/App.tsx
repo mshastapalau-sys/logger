@@ -30,8 +30,7 @@ import { CompetitorModal } from './components/CompetitorModal';
 import { CityFineModal } from './components/CityFineModal';
 import { BankruptcyModal } from './components/BankruptcyModal';
 import { NotificationLogModal } from './components/NotificationLogModal';
-import { TutorialModal } from './components/TutorialModal';
-import { StartRulesModal } from './components/StartRulesModal';
+import { RulesModal } from './components/RulesModal';
 import { UpgradesModal } from './components/UpgradesModal';
 import { TeleportGlitchModal } from './components/TeleportGlitchModal';
 import { VictoryModal, GameOverModal } from './components/EndGameModals';
@@ -524,8 +523,7 @@ export default function App() {
   ]);
 
   // Modals & Settings
-  const [showTutorial, setShowTutorial] = useState<boolean>(false);
-  const [showStartRules, setShowStartRules] = useState<boolean>(true);
+  const [showRules, setShowRules] = useState<boolean>(true);
   const [showBankruptcyModal, setShowBankruptcyModal] = useState<boolean>(false);
   const [showNotificationLogModal, setShowNotificationLogModal] = useState<boolean>(false);
   const [showUpgradesModal, setShowUpgradesModal] = useState<boolean>(false);
@@ -964,7 +962,7 @@ export default function App() {
 
   // Main Tick Loop: Day/Night, Inspectors, Solar Charging
   useEffect(() => {
-    if (gameState !== 'PLAYING' || showStartRules) return;
+    if (gameState !== 'PLAYING' || showRules) return;
 
     const interval = setInterval(() => {
       // 1. Advance Day/Night time
@@ -1108,7 +1106,7 @@ export default function App() {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [gameState, showStartRules, dayNight, hasBioFertilizer, location, gridPenalty.hasPenalty, placedMachines, deliveryBoxes]);
+  }, [gameState, showRules, dayNight, hasBioFertilizer, location, gridPenalty.hasPenalty, placedMachines, deliveryBoxes]);
 
   // Forest Inspector
   // Правило 1: Штраф даётся ТОЛЬКО если осталось из всех деревьев 2 дерева!
@@ -1217,10 +1215,10 @@ export default function App() {
     const handleGlobalKeys = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
 
-      if (showStartRules) {
+      if (showRules) {
         if (e.key === 'Escape' || e.key === 'Enter' || e.code === 'Space') {
           e.preventDefault();
-          setShowStartRules(false);
+          setShowRules(false);
         }
         return;
       }
@@ -1249,6 +1247,8 @@ export default function App() {
         setShowHireModal(true);
       } else if (key === 'b' || key === 'и' || code === 'KeyB') {
         setShowBankruptcyModal(true);
+      } else if (key === 'r' || key === 'к' || code === 'KeyR') {
+        setShowRules(true);
       } else if (key === 'j' || key === 'о' || code === 'KeyJ') {
         setShowNotificationLogModal((prev) => !prev);
       } else if (key === 'f' || key === 'а' || code === 'KeyF') {
@@ -1267,7 +1267,6 @@ export default function App() {
         setShowNotificationLogModal(false);
         setShowUpgradesModal(false);
         setInspectedCompetitor(null);
-        setShowTutorial(false);
         setShowGridModal(false);
       }
     };
@@ -1279,7 +1278,7 @@ export default function App() {
   // Movement handler (WSAD)
   const handlePlayerMove = useCallback(
     (dx: number, dy: number) => {
-      if (showStartRules) return;
+      if (showRules) return;
       setPlayer((prev) => {
         const speed = 4.4;
         let newX = prev.x + dx * speed;
@@ -1322,7 +1321,7 @@ export default function App() {
         };
       });
     },
-    [location, dayNight.isNight, gridPenalty.hasPenalty, showStartRules]
+    [location, dayNight.isNight, gridPenalty.hasPenalty, showRules]
   );
 
   // Left Click (ЛКМ: сломать коробку, срубить дерево или клик для движения)
@@ -2038,7 +2037,7 @@ export default function App() {
           currentStep={tutorialSteps[currentStepIndex]}
           stepIndex={currentStepIndex}
           totalSteps={tutorialSteps.length}
-          onOpenFullGuide={() => setShowTutorial(true)}
+          onOpenFullGuide={() => setShowRules(true)}
         />
 
         {/* HUD */}
@@ -2073,7 +2072,7 @@ export default function App() {
             if (location === 'FOREST') teleportToLocation('MARKET');
             else teleportToLocation('FOREST');
           }}
-          onOpenGuide={() => setShowTutorial(true)}
+          onOpenGuide={() => setShowRules(true)}
           onOpenGridPenalty={() => setShowGridModal(true)}
           onInteractAction={handleInteractAction}
           onPlantAction={handleEAction}
@@ -2248,11 +2247,7 @@ export default function App() {
       )}
 
 
-      {showStartRules && <StartRulesModal onClose={() => setShowStartRules(false)} />}
-
-      {showTutorial && (
-        <TutorialModal onClose={() => setShowTutorial(false)} />
-      )}
+      {showRules && <RulesModal onClose={() => setShowRules(false)} />}
 
       {/* Teleport Breakdown Glitch & Choice Modal */}
       <TeleportGlitchModal
