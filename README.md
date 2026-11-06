@@ -18,8 +18,10 @@ npm run dev
 
 ## Деплой
 
+Автоматически: после каждого push в `main` GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) проверяет типы, собирает игру и публикует `dist` в ветку `gh-pages` (GitHub Pages). На pull request в `main` выполняются только проверка типов и сборка.
+
+Вручную (при необходимости):
+
 ```
 npm run deploy
 ```
-
-Собирает игру и публикует `dist` в ветку `gh-pages` (GitHub Pages).
