@@ -239,10 +239,11 @@ export const HUD: React.FC<HUDProps> = ({
 
           <button
             onClick={onOpenGuide}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
-            title="Правила и эко-механики"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500 text-slate-200 text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+            title="Правила и управление [R]"
           >
-            <HelpCircle className="w-4 h-4" />
+            <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Правила [R]</span>
           </button>
 
           <button
