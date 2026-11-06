@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Эко-Лесоруб: Баланс Природы (Standalone)</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a1210;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      user-select: none;
+    }
+    header {
+      background: #1e293b;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    canvas {
+      border: 3px solid #10b981;
+      border-radius: 12px;
+      background: #0f1715;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+    .footer-tip {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>💰 Баланс: <span id="money">140</span> Br</div>
+    <div>🪵 Брёвна: <span id="logs">0</span></div>
+    <div>📦 Доски: <span id="planks">4</span></div>
+    <div>🌱 Саженцы: <span id="саженцы">6</span></div>
+    <div>🚗 Тесла: <span id="tesla">ГОТОВ [T]</span></div>
+  </header>
+
+  <canvas id="gameCanvas" width="1000" height="600"></canvas>
+
+  <div class="footer-tip">
+    Управление: <b>W, S, A, D</b> — ходьба | <b>ЛКМ</b> — рубка дерева | <b>E</b> — посадить саженец | <b>T</b> — поездка на Тесле
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let player = { x: 500, y: 300, speed: 3, money: 140, logs: 0, planks: 4, saplings: 6 };
+    let keys = {};
+    let trees = [
+      { x: 300, y: 200, health: 3, maxHealth: 3, stage: 'mature' },
+      { x: 400, y: 400, health: 3, maxHealth: 3, stage: 'mature' },
+      { x: 700, y: 250, health: 3, maxHealth: 3, stage: 'ancient' },
+    ];
+
+    window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      // Check tree chop
+      trees.forEach((tree, idx) => {
+        if (Math.hypot(mx - tree.x, my - tree.y) < 35) {
+          tree.health--;
+          if (tree.health <= 0) {
+            player.logs += 2;
+            trees.splice(idx, 1);
+            // Respawn new tree
+            setTimeout(() => {
+              trees.push({ x: 100 + Math.random() * 800, y: 100 + Math.random() * 400, health: 3, maxHealth: 3, stage: 'mature' });
+            }, 5000);
+          }
+        }
+      });
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key.toLowerCase() === 'e') {
+        player.saplings--;
+        trees.push({ x: player.x, y: player.y, health: 3, maxHealth: 3, stage: 'sapling' });
+      }
+      if (e.key.toLowerCase() === 't') {
+        player.money += 50; // Sell bonus trip
+        alert('Поездка на Tesla: вы посетили рынок и продали товар!');
+      }
+    });
+
+    function update() {
+      if (keys['w'] || keys['ц']) player.y -= player.speed;
+      if (keys['s'] || keys['ы']) player.y += player.speed;
+      if (keys['a'] || keys['ф']) player.x -= player.speed;
+      if (keys['d'] || keys['в']) player.x += player.speed;
+
+      player.x = Math.max(30, Math.min(canvas.width - 30, player.x));
+      player.y = Math.max(30, Math.min(canvas.height - 30, player.y));
+
+      document.getElementById('money').innerText = player.money;
+      document.getElementById('logs').innerText = player.logs;
+      document.getElementById('planks').innerText = player.planks;
+      document.getElementById('саженцы').innerText = player.saplings;
+    }
+
+    function draw() {
+      ctx.fillStyle = '#0f1715';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw trees
+      trees.forEach(tree => {
+        ctx.fillStyle = tree.stage === 'ancient' ? '#166534' : '#22c55e';
+        ctx.beginPath();
+        ctx.arc(tree.x, tree.y, tree.stage === 'ancient' ? 28 : 20, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#14532d';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Health bar
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(tree.x - 15, tree.y - 32, 30, 5);
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(tree.x - 15, tree.y - 32, (tree.health / tree.maxHealth) * 30, 5);
+      });
+
+      // Draw Tesla Car at (850, 100)
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.roundRect(820, 80, 60, 25, [6, 12, 4, 4]);
+      ctx.fill();
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(835, 70, 30, 12);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('🚗 Tesla [T]', 850, 125);
+
+      // Draw Player
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

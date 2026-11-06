@@ -1,0 +1,6 @@
+{
+  "name": "Эко-Лесоруб: Баланс Природы",
+  "description": "Эко-экономическая игра: разумная вырубка, посадка саженцев, солнечная энергия, сеть телепортов и экологический надзор.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
