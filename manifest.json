@@ -1,0 +1,23 @@
+{
+  "id": "/",
+  "name": "Эко-Лесоруб: Баланс Природы",
+  "short_name": "Эко-Лесоруб",
+  "description": "Эко-экономическая игра: разумная вырубка, посадка саженцев, солнечная энергия, электромобили Tesla и экологический надзор.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0f1715",
+  "background_color": "#0f1715",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=192&h=192&fit=crop",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=512&h=512&fit=crop",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
