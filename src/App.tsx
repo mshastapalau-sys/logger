@@ -30,7 +30,6 @@ import { CompetitorModal } from './components/CompetitorModal';
 import { CityFineModal } from './components/CityFineModal';
 import { BankruptcyModal } from './components/BankruptcyModal';
 import { NotificationLogModal } from './components/NotificationLogModal';
-import { PythonExportModal } from './components/PythonExportModal';
 import { TutorialModal } from './components/TutorialModal';
 import { UpgradesModal } from './components/UpgradesModal';
 import { TeleportGlitchModal } from './components/TeleportGlitchModal';
@@ -524,7 +523,6 @@ export default function App() {
   ]);
 
   // Modals & Settings
-  const [showPythonCode, setShowPythonCode] = useState<boolean>(false);
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [showBankruptcyModal, setShowBankruptcyModal] = useState<boolean>(false);
   const [showNotificationLogModal, setShowNotificationLogModal] = useState<boolean>(false);
@@ -1236,8 +1234,6 @@ export default function App() {
         else setShowStallModal(true);
       } else if (key === 'u' || key === 'г' || code === 'KeyU') {
         setShowUpgradesModal((prev) => !prev);
-      } else if (key === 'p' || key === 'з' || code === 'KeyP') {
-        setShowPythonCode((prev) => !prev);
       } else if (key === 'k' || key === 'л' || code === 'KeyK') {
         setShowTerritoryModal(true);
       } else if (key === 'h' || key === 'р' || code === 'KeyH') {
@@ -1262,7 +1258,6 @@ export default function App() {
         setShowNotificationLogModal(false);
         setShowUpgradesModal(false);
         setInspectedCompetitor(null);
-        setShowPythonCode(false);
         setShowTutorial(false);
         setShowGridModal(false);
       }
@@ -2056,23 +2051,7 @@ export default function App() {
           >
             Строймаркет
           </button>
-
-          <button
-            onClick={() => setShowPythonCode(true)}
-            className="hover:text-emerald-400 transition-colors cursor-pointer text-slate-300"
-          >
-            Python Скрипт
-          </button>
         </nav>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowPythonCode(true)}
-            className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-medium transition-colors shadow-sm cursor-pointer whitespace-nowrap"
-          >
-            Скачать Pygame (.py)
-          </button>
-        </div>
       </header>
 
       {/* Main Container */}
@@ -2117,7 +2096,6 @@ export default function App() {
             if (location === 'FOREST') teleportToLocation('MARKET');
             else teleportToLocation('FOREST');
           }}
-          onOpenPythonCode={() => setShowPythonCode(true)}
           onOpenGuide={() => setShowTutorial(true)}
           onOpenGridPenalty={() => setShowGridModal(true)}
           onInteractAction={handleInteractAction}
@@ -2292,9 +2270,6 @@ export default function App() {
         />
       )}
 
-      {showPythonCode && (
-        <PythonExportModal onClose={() => setShowPythonCode(false)} />
-      )}
 
       {showTutorial && (
         <TutorialModal onClose={() => setShowTutorial(false)} />
