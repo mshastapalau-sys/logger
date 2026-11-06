@@ -531,7 +531,6 @@ export default function App() {
   const [teleportRebootTimer, setTeleportRebootTimer] = useState<number>(0);
   const [showTeleportGlitchModal, setShowTeleportGlitchModal] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isDesktopWindow, setIsDesktopWindow] = useState<boolean>(true);
   const [gameOverReason, setGameOverReason] = useState<'BANKRUPTCY' | 'STRIKES' | 'FINES' | 'NO_TREES_NO_MONEY'>('NO_TREES_NO_MONEY');
 
   // Solar panels count
@@ -1973,40 +1972,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#0a1210] text-[#e2e8f0] flex flex-col items-center justify-between p-2 sm:p-4 select-none font-sans ${isDesktopWindow ? 'border-4 border-slate-800 rounded-2xl shadow-2xl max-w-6xl mx-auto my-2' : ''}`}>
-      {/* Desktop App Window Title Bar */}
-      {isDesktopWindow && (
-        <div className="w-full bg-[#1e293b] text-slate-300 px-3 py-1.5 rounded-t-xl flex items-center justify-between text-xs font-mono select-none mb-2 border-b border-slate-700">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-rose-500 inline-block cursor-pointer" onClick={() => setIsDesktopWindow(false)} title="Закрыть окно" />
-            <span className="w-3 h-3 rounded-full bg-amber-500 inline-block cursor-pointer" onClick={() => {
-              if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-              } else {
-                document.exitFullscreen().catch(() => {});
-              }
-            }} title="На весь экран" />
-            <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block cursor-pointer" onClick={() => setToastMessage('Приложение свернуто в трей')} title="Свернуть" />
-            <span className="ml-2 font-bold text-slate-200">🌲 Эко-Лесоруб Pro — Desktop App v2.4</span>
-          </div>
-          <div className="flex items-center gap-3 text-[11px]">
-            <span className="text-emerald-400 font-semibold">🟢 Desktop PWA</span>
-            <button
-              onClick={() => {
-                if (window.matchMedia('(display-mode: standalone)').matches) {
-                  setToastMessage('Приложение уже запущено как нативная программа!');
-                } else {
-                  setToastMessage('Для установки на ПК: нажмите меню браузера (⋮) -> «Установить приложение / Создать ярлык».');
-                }
-              }}
-              className="px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold cursor-pointer transition-colors"
-            >
-              🖥️ Установить на ПК
-            </button>
-          </div>
-        </div>
-      )}
-
+    <div className="min-h-screen bg-[#0a1210] text-[#e2e8f0] flex flex-col items-center justify-between p-2 sm:p-4 select-none font-sans">
       {/* Header */}
       <header className="w-full max-w-5xl flex items-center justify-between py-2 border-b border-emerald-950/80 mb-2 text-xs">
         <div className="flex items-center gap-2">
