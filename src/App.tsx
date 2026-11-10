@@ -2027,6 +2027,16 @@ export default function App() {
           >
             Строймаркет
           </button>
+          {import.meta.env.PROD && window.location.protocol !== 'file:' && (
+            <a
+              href="standalone.zip"
+              download
+              className="text-amber-300 hover:text-amber-200 transition-colors cursor-pointer font-medium"
+              title="Скачать офлайн-версию (ZIP, запуск без интернета)"
+            >
+              💾 Офлайн
+            </a>
+          )}
         </nav>
       </header>
 
