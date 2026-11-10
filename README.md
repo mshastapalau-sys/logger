@@ -16,6 +16,25 @@ npm run dev
 
 Игра откроется на http://localhost:3000.
 
+## Standalone-версия (офлайн, запуск с флешки)
+
+```
+npm run build:standalone
+```
+
+Собирает всю игру в `dist-standalone/`:
+
+- `start-game.html` — вся игра в одном файле, открывается двойным кликом в любом современном браузере (Edge, Chrome, Firefox);
+- `helper.bat` — вспомогательный лаунчер: открывает игру в окне приложения без адресной строки и кнопок навигации (через `--app` у Edge/Chrome; если их нет — открывает в браузере по умолчанию). Создаёт рядом ярлык `Eco-Lesorub.lnk` с иконкой-ёлкой — запускать удобнее через него;
+- `icon.ico` — иконка игры (генерируется `node scripts/generate-icon.mjs`).
+
+Интернет и сервер не нужны — папку можно скопировать на флешку и запускать оттуда.
+
+Готовая сборка публикуется автоматически при пуше в `main`:
+
+- ветка [`standalone`](../../tree/standalone) — файлы сборки (скачать: Code → Download ZIP);
+- `https://mshastapalau-sys.github.io/logger/standalone.zip` — архив одним файлом с игрового сайта.
+
 ## Деплой
 
 Автоматически: после каждого push в `main` GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) проверяет типы, собирает игру и публикует `dist` в ветку `gh-pages` (GitHub Pages). На pull request в `main` выполняются только проверка типов и сборка.
