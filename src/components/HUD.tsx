@@ -202,7 +202,7 @@ export const HUD: React.FC<HUDProps> = ({
         </div>
 
         {/* Right: Quick Tools, Upgrades & Controls */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap ml-auto">
           {/* UPGRADES MODAL BUTTON */}
           <button
             onClick={onOpenUpgrades}
@@ -238,20 +238,20 @@ export const HUD: React.FC<HUDProps> = ({
           </button>
 
           <button
-            onClick={onOpenGuide}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500 text-slate-200 text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
-            title="Правила и управление [R]"
-          >
-            <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Правила [R]</span>
-          </button>
-
-          <button
             onClick={onToggleMute}
             className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
             title={isMuted ? 'Включить звук' : 'Выключить звук'}
           >
             {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+          </button>
+
+          <button
+            onClick={onOpenGuide}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/80 text-amber-200 text-xs font-bold transition-all shadow-[0_0_12px_rgba(251,191,36,0.55)] hover:shadow-[0_0_18px_rgba(251,191,36,0.85)] active:scale-95 cursor-pointer"
+            title="Правила и управление [R]"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-300" />
+            <span>Правила [R]</span>
           </button>
         </div>
       </div>
