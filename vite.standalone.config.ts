@@ -12,10 +12,11 @@ const lnkName = 'Eco-Lesorub.lnk';
 
 // helper.bat: открывает start-game.html в окне приложения без адресной строки
 // и кнопок навигации (флаг --app у Edge/Chrome). %~dp0 — папка батника, работает
-// с любой буквой флешки. При каждом запуске (пере)создаёт ярлык Eco-Lesorub.lnk
-// с иконкой icon.ico: цель ярлыка — %ComSpec% /c helper.bat, поэтому ярлык
-// остаётся рабочим при переносе папки на другой диск (helper.bat ищется
-// относительно папки ярлыка). Фолбэк — обычное окно браузера по умолчанию.
+// с любой буквой флешки. При каждом запуске (пере)создаёт два ярлыка с иконкой:
+// Eco-Lesorub.lnk рядом с игрой (цель %ComSpec% /c helper.bat — портируем,
+// helper.bat ищется относительно папки ярлыка) и такой же на рабочем столе
+// (абсолютная цель — самолечится при каждом запуске helper.bat).
+// Фолбэк — обычное окно браузера по умолчанию.
 const launcherBat = [
   '@echo off',
   'rem Eco-Lesorub helper: opens start-game.html in an app window (no address bar).',
@@ -36,7 +37,7 @@ const launcherBat = [
   `  start "" "%~dp0${htmlName}"`,
   ')',
   '',
-  `powershell -NoProfile -Command "$s=(New-Object -ComObject WScript.Shell).CreateShortcut('%~dp0${lnkName}');$s.TargetPath='%ComSpec%';$s.Arguments='/c ${batName}';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save()" >nul 2>nul`,
+  `powershell -NoProfile -Command "$w=New-Object -ComObject WScript.Shell;$s=$w.CreateShortcut('%~dp0${lnkName}');$s.TargetPath='%ComSpec%';$s.Arguments='/c ${batName}';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save();$s=$w.CreateShortcut([Environment]::GetFolderPath('Desktop')+'\\${lnkName}');$s.TargetPath='%~dp0${batName}';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save()" >nul 2>nul`,
   '',
 ].join('\r\n');
 
@@ -48,10 +49,11 @@ const standaloneReadme = [
   '',
   'КАК ЗАПУСТИТЬ (на выбор):',
   '',
-  '1) Eco-Lesorub.lnk — игра в отдельном окне без адресной строки.',
-  '   Ярлык появляется после первого запуска helper.bat.',
+  '1) Ярлык «Eco-Lesorub» на рабочем столе или в этой папке — игра',
+  '   в отдельном окне без адресной строки. Ярлыки появляются после',
+  '   первого запуска helper.bat.',
   '',
-  '2) helper.bat — то же окно приложения + создаёт ярлык выше.',
+  '2) helper.bat — то же окно приложения + создаёт ярлыки выше.',
   '',
   `3) ${htmlName} — двойной клик, игра откроется в обычном окне браузера.`,
   '',
