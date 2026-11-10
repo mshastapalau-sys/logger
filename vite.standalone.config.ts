@@ -40,6 +40,29 @@ const launcherBat = [
   '',
 ].join('\r\n');
 
+// README.txt для конечного пользователя — кладётся рядом с игрой в dist-standalone.
+// UTF-8 с BOM + CRLF, чтобы Блокнот корректно показал кириллицу.
+const standaloneReadme = [
+  'Эко-Лесоруб: Баланс Природы — офлайн-версия',
+  '==========================================',
+  '',
+  'КАК ЗАПУСТИТЬ (на выбор):',
+  '',
+  '1) Eco-Lesorub.lnk — игра в отдельном окне без адресной строки.',
+  '   Ярлык появляется после первого запуска helper.bat.',
+  '',
+  '2) helper.bat — то же окно приложения + создаёт ярлык выше.',
+  '',
+  `3) ${htmlName} — двойной клик, игра откроется в обычном окне браузера.`,
+  '',
+  'Что нужно: Windows и современный браузер (Edge, Chrome, Firefox).',
+  'Интернет НЕ нужен. Все файлы должны лежать в одной папке —',
+  'папку можно копировать целиком, в том числе на флешку.',
+  '',
+  'Правила и управление: кнопка «Правила» в игре (клавиша R).',
+  '',
+].join('\r\n');
+
 // Офлайн-сборка: весь JS/CSS инлайнится в один HTML-файл + helper.bat + icon.ico.
 // Исходник-точка входа — standalone.entry.html в корне (открывать напрямую НЕЛЬЗЯ).
 export default defineConfig(() => {
@@ -55,6 +78,7 @@ export default defineConfig(() => {
         path.join(outDir, 'icon.ico'),
       );
       fs.writeFileSync(path.join(outDir, batName), launcherBat);
+      fs.writeFileSync(path.join(outDir, 'README.txt'), `\uFEFF${standaloneReadme}`);
     },
   };
 
