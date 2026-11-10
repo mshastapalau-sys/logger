@@ -30,6 +30,12 @@ jobs:
 
       - run: npx vite build --base=./
 
+      - name: Build standalone version
+        run: npm run build:standalone
+
+      - name: Pack standalone zip for site download
+        run: cd dist-standalone && zip -r ../dist/standalone.zip .
+
       - name: Deploy to gh-pages
         if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4
@@ -39,3 +45,13 @@ jobs:
           publish_dir: ./dist
           enable_jekyll: false
           commit_message: Deploy eco-game build
+
+      - name: Deploy standalone build
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: standalone
+          publish_dir: ./dist-standalone
+          enable_jekyll: false
+          commit_message: Deploy standalone build
