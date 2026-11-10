@@ -17,4 +17,4 @@ if defined BROWSER (
   start "" "%~dp0start-game.html"
 )
 
-powershell -NoProfile -Command "$s=(New-Object -ComObject WScript.Shell).CreateShortcut('%~dp0Eco-Lesorub.lnk');$s.TargetPath='%ComSpec%';$s.Arguments='/c helper.bat';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save()" >nul 2>nul
+powershell -NoProfile -Command "$w=New-Object -ComObject WScript.Shell;$s=$w.CreateShortcut('%~dp0Eco-Lesorub.lnk');$s.TargetPath='%ComSpec%';$s.Arguments='/c helper.bat';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save();$s=$w.CreateShortcut([Environment]::GetFolderPath('Desktop')+'\Eco-Lesorub.lnk');$s.TargetPath='%~dp0helper.bat';$s.WorkingDirectory='%~dp0';$s.IconLocation='%~dp0icon.ico';$s.Description='Eco-Lesorub';$s.WindowStyle=7;$s.Save()" >nul 2>nul
