@@ -202,7 +202,7 @@ export const HUD: React.FC<HUDProps> = ({
         </div>
 
         {/* Right: Quick Tools, Upgrades & Controls */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap ml-auto">
           {/* UPGRADES MODAL BUTTON */}
           <button
             onClick={onOpenUpgrades}
